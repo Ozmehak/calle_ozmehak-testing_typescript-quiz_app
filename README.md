@@ -1,7 +1,7 @@
 # School project for course "Typescript and Testing"
 
 Author: Calle Özmehak.\
-Collaborators: None at this time.\
+Collaborators: None at this time.
 
 ### `npm start`
 
