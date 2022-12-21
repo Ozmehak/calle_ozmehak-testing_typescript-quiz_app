@@ -1,29 +1,27 @@
-import {useEffect, useState} from "react";
+import {Question} from "../types/Types";
 
-interface IQuestions {
-    question?: string
-    incorrectAnswers?: string[]
+interface QuestionsProps {
+    onChoice?: (choice: string) => void
+    question: Question
 }
 
-export const Questions = ({question, incorrectAnswers}: IQuestions) => {
-    const [questions, setQuestions] = useState<any[]>([])
-    useEffect(() => {
-        fetch('https://the-trivia-api.com/api/questions?categories=film_and_tv&limit=20&difficulty=medium')
-            .then((res) => res.json())
-            .then((res) => setQuestions(res))
-    }, [])
+export const Questions = ({onChoice, question}: QuestionsProps) => {
+
+
+    function handleChoiceClick(choice: string) {
+        onChoice?.(choice)
+    }
 
 
     return (
         <>
-            {questions && questions.splice(1, 1).map((question) =>
-                <div>
-                    <p>{question['question']}</p>
-                    <p>{question['correctAnswer']}</p>
-                    {question.incorrectAnswers.map((e:any) => {
-                        return <p>{e}</p>
-                    })}
-                </div>)}
+            {question && <div>
+                <p>{question['question']}</p>
+                <p>{question['correctAnswer']}</p>
+                {question.incorrectAnswers.map((e) => {
+                    return <button onClick={() => handleChoiceClick(e)}>{e}</button>
+                })}
+            </div>}
         </>
     )
 }

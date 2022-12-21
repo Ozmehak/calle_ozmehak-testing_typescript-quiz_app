@@ -11,33 +11,79 @@
 <body>
 <div class="mermaid">
   sequenceDiagram
-  participant web as Web Browser
-  participant blog as Blog Service
-  participant account as Account Service
-  participant mail as Mail Service
-  participant db as Storage
+  participant user as User
+  participant app as Application
+  participant api as API
 
-  Note over web,db: The user must be logged in to submit blog posts
-  web->>+account: Logs in using credentials
-  account->>db: Query stored accounts
-  db->>account: Respond with query result
-
-  alt Credentials not found
-  account->>web: Invalid credentials
-  else Credentials found
-  account->>-web: Successfully logged in
-
-  Note over web,db: When the user is authenticated, they can now submit new posts
-  web->>+blog: Submit new post
-  blog->>db: Store post data
-
-  par Notifications
-  blog--)mail: Send mail to blog subscribers
-  blog--)db: Store in-site notifications
-  and Response
-  blog-->>-web: Successfully posted
+  user ->>+app: Clicks Start Game
+  app ->>+api: Get Categories
+  alt is Error
+  api -->>+app: ErrorCode
+  app -->>+user: ErrorMessage
+  else is Ok
+  api -->>+app: AllCategories
+  app -->>+user: Show 3 random Categories
+  end
+  user ->>+app: Selects Category
+  app ->>+api: Get Questions & Answers
+  alt not Found
+  api -->>+app: Question not found
+  loop Until Found
+  app -->>+api: get Question
+  alt to many requests
+  api -->>+app: Request Overload
+  app -->>+user: Game Over
   end
   end
+  end
+  api -->>+app: Question & Answers
+  app -->>+user: shows 3 sec timer
+  app -->>+user: show 1 question
+  app -->>+user: show 4 answer options
+  app -->>+user: Start 30 sec timer
+  par
+  user ->>+app: select answer
+  app -->>+user: Stop Timer
+  end
+  alt is Correct
+  app ->>+user: Correct Answer & Add points
+  else not Correct
+  app ->>+user: Not Correct, no points
+  end
+  loop 8 times
+  app -->>+user: Show 3 random Categories
+  user ->>+app: Selects Category
+  app ->>+api: Get Questions & Answers
+  alt not Found
+  api -->>+app: Question not found
+  loop Until Found
+  app -->>+api: get Question
+  alt to many requests
+  api -->>+app: Request Overload
+  app -->>+user: Game Over
+  end
+  end
+  end
+  api -->>+app: Question & Answers
+  app -->>+user: shows 3 sec timer
+  app -->>+user: show 1 question
+  app -->>+user: show 4 answer options
+  par
+  user ->>+app: select answer
+  app -->>+user: Stop Timer
+  end
+  alt is Correct
+  app ->>+user: Correct Answer & Add points
+  else not Correct
+  app ->>+user: Not Correct, no points
+  end
+  end
+  par points
+  app --x+user: Show Points
+  and game over
+  app --x+user: Game Over
+  end
+
 
 </div>
 </body>

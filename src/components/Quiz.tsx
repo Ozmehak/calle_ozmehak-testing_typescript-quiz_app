@@ -1,44 +1,38 @@
 import {useEffect, useState} from "react";
-import { shuffle } from "../utils";
 import {Questions} from "./Questions";
+import {Question} from "../types/Types";
+import {Categories} from "./Categories";
 
-interface QuizStuff {
-    category?: string
-    res?: any
-}
 
 enum GameState {
     MENU,
     SELECT_CATEGORY,
     PLAYING,
-    RESULT
+    RESULT,
+    LOADING
 }
 
 
-export const Quiz = ({category, res}: QuizStuff) => {
+export const Quiz = () => {
+    const [questions, setQuestions] = useState<Question[]>([])
+    const [gameState, setGameState] = useState(GameState.LOADING)
 
-    console.log(GameState)
-    const [gameState, setGameState] = useState(GameState.MENU)
-    const [categories, setCategories] = useState<QuizStuff[]>([])
     useEffect(() => {
-        fetch('https://the-trivia-api.com/api/categories')
-            .then((res: Response) => res.json())
-            .then((res) => setCategories(res))
 
     }, [])
 
-
-    console.log(categories)
+    const question = questions[0]
     return (
 
         <>
-
+            {gameState === GameState.LOADING && <p>Loading</p>}
             {gameState === GameState.MENU ? <button onClick={() => setGameState(GameState.SELECT_CATEGORY)}>Start Kvizz</button>
                 : <button onClick={() => setGameState(GameState.MENU)}>Stop</button>}
-            {gameState === GameState.SELECT_CATEGORY && shuffle(Object.keys(categories)).splice(0, 3).map((category: any) =>
-                <p>{category}<button onClick={() => setGameState(GameState.PLAYING)}>Play!</button></p>)}
+            {gameState === GameState.SELECT_CATEGORY && <Categories/>}
 
-            {gameState === GameState.PLAYING && <Questions />}
+            {gameState === GameState.PLAYING && <Questions question={question} onChoice={(choice) => {
+                console.log('bestäm här', choice)
+            }}/>}
         </>
     )
 }

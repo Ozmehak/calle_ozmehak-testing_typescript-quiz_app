@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import {shuffle} from "./utils";
+import {shuffle} from "./utils/Utils";
 
 test('renders learn react link', () => {
   render(<App />);
