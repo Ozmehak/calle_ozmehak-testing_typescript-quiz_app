@@ -7,3 +7,12 @@ export function shuffle<T>(array: T[]): T[] {
     }
     return to
 }
+
+
+export function test1(){
+    console.log("test1")
+}
+
+export default function test2(){
+    console.log("test2")
+}
