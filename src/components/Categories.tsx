@@ -2,32 +2,28 @@ import {shuffle} from "../utils/Utils";
 import {useEffect, useState} from "react";
 import {QuizStuff} from "../types/Types";
 import {getQuizData} from "../api/Api";
-import {mockData} from "../api/Api";
 
-export const Categories = ()  => {
-    const [gatorade, setGatorade] = useState<QuizStuff> ([])
-    async function awaitData() :Promise<void> {
-        const result = await mockData()
-        setGatorade(result)
-    }
+export const Categories = () => {
+    const [gatorade, setGatorade] = useState<QuizStuff>({});
 
+    useEffect(() => {
+        async function fetchData() {
+            const data = await getQuizData();
+            setGatorade(data);
+        }
+        fetchData();
+    }, []);
 
-    useEffect( () => {
-
-        getQuizData().then(data  => setGatorade(data))
-        awaitData()
-    }, [])
-
-
-    return(
-
+    return (
         <>
-            { shuffle(Object.keys(gatorade)).splice(0, 3).map((category: any) =>
-                <p>{category}
-                    <button onClick={() => {}}>Play!</button>
-                </p>)}
+            {shuffle(Object.keys(gatorade))
+                .splice(0, 3)
+                .map((category) => (
+                    <p key={category}>
+                        {category}
+                        <button onClick={() => {}}>Play!</button>
+                    </p>
+                ))}
         </>
-
-
-    )
-}
+    );
+};

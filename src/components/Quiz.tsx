@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {Questions} from "./Questions";
 import {Question} from "../types/Types";
 import {Categories} from "./Categories";
+import {Timer} from "./Timer";
 
 
 enum GameState {
@@ -33,6 +34,7 @@ export const Quiz = () => {
             {gameState === GameState.PLAYING && <Questions question={question} onChoice={(choice) => {
                 console.log('bestäm här', choice)
             }}/>}
+            <Timer time={30}/>
         </>
     )
 }

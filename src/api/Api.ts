@@ -1,17 +1,20 @@
 import {QuizStuff} from "../types/Types";
 
 
-export const getQuizData = (): Promise<QuizStuff> => {
-    return fetch('https://the-trivia-api.com/api/categories')
-        .then((res) => res.json())
-        .then((json) => {return json})
+export const getQuizData = (): any => {
+    try {
+        return fetch('https://the-trivia-api.com/api/categories')
+            .then((res) => res.json())
+            .then((json) => {
+                return json
+            })
 
+    } catch (error) {
+        console.error(error)
 
-}
-export async function mockData(): Promise<QuizStuff> {
-    return {mockarray: ['a','b','c']}
+        return "Api is down right now, try again later"
 
-
+    }
 }
 
 /*
