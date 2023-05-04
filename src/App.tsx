@@ -1,11 +1,8 @@
-import React, {useState} from 'react';
-import './App.css';
-import {Quiz} from './components/Quiz'
+import "nes.css/css/nes.min.css";
+
+import { Quiz } from "./components/Quiz";
 
 function App() {
-
-
-
   return (
     <div className="App">
       <Quiz />
