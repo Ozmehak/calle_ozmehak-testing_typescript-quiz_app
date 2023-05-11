@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { GameStateCtx, QuestionCtx, ScoreCtx } from "../ctx/Context";
+import { gameConfig } from "../utils/GameConfig";
+import { answerShuffle, calculateScore } from "../utils/Utils";
 
 export const Question = () => {
   const {
@@ -20,9 +22,12 @@ export const Question = () => {
   const { category, difficulty, region } = useContext(QuestionCtx);
   const [question, setQuestion] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [answers, setAnswers] = useState<any>([]);
 
   const [fastCount, setFastCount] = useState<number>(3);
-  const [slowCount, setSlowCount] = useState<number>(30);
+  const [slowCount, setSlowCount] = useState<number>(
+    gameConfig.timePerQuestion
+  );
   const [fastTimerOn, setFastTimerOn] = useState<boolean>(true);
   const [slowTimerOn, setSlowTimerOn] = useState<boolean>(false);
 
@@ -47,7 +52,7 @@ export const Question = () => {
     ) {
       setConsecutiveBonus(consecutiveCorrectAnswers);
     }
-  }, [consecutiveCorrectAnswers, consecutiveBonus]);
+  }, [consecutiveCorrectAnswers, setConsecutiveBonus, consecutiveBonus]);
 
   useEffect(() => {
     const getQuizQuestion = async () => {
@@ -58,6 +63,7 @@ export const Question = () => {
           .then((res) => res.json())
           .then((json) => setQuestion(json[0]));
       } catch (error) {
+        getQuizQuestion();
         console.error(error);
 
         return "Api is down right now, try again later";
@@ -65,6 +71,14 @@ export const Question = () => {
     };
     getQuizQuestion();
   }, [category, difficulty, region]);
+
+  useEffect(() => {
+    if (question) {
+      setAnswers(
+        answerShuffle(question.incorrectAnswers, question.correctAnswer)
+      );
+    }
+  }, [question]);
 
   useEffect(() => {
     let intervalFast: NodeJS.Timeout | null = null;
@@ -106,10 +120,15 @@ export const Question = () => {
     setConsecutiveCorrectAnswers(0);
     setRound(round + 1);
   }
-  if (round > 9) {
+  if (round > gameConfig.questionsPerRound) {
     setScore(
-      Math.floor(totalRemainingTime * difficultyMultiplier + correctAnswers) *
+      calculateScore(
+        totalRemainingTime,
+        difficultyMultiplier,
+        gameConfig.increaseDifficultyMultiplier,
+        correctAnswers,
         consecutiveBonus
+      )
     );
     setChangeGameState("result");
   }
@@ -131,23 +150,16 @@ export const Question = () => {
               <section className="message -right">
                 <div className="nes-balloon from-right is-dark">
                   {question &&
-                    question.incorrectAnswers.map(
-                      (answer: string, i: number) => (
-                        <button
-                          key={i}
-                          value={answer}
-                          onClick={(e) => handleAnswer(e.currentTarget.value)}
-                        >
-                          {answer}
-                        </button>
-                      )
-                    )}
-                  <button
-                    value={question.correctAnswer}
-                    onClick={(e) => handleAnswer(e.currentTarget.value)}
-                  >
-                    {question.correctAnswer}
-                  </button>
+                    answers.map((answer: string, i: number) => (
+                      <button
+                        className={"answerButton"}
+                        key={i}
+                        value={answer}
+                        onClick={(e) => handleAnswer(e.currentTarget.value)}
+                      >
+                        {answer}
+                      </button>
+                    ))}
                 </div>
                 <i className="nes-bcrikko"></i>
               </section>

@@ -3,10 +3,10 @@ import { Question } from "./Question";
 import { Categories } from "./Categories";
 import { GameStateCtx, QuestionCtx, ScoreCtx } from "../ctx/Context";
 import styled from "styled-components";
+import { gameConfig } from "../utils/GameConfig";
 
 export enum GameState {
   LOADING,
-  MENU,
   SELECT_CATEGORY,
   PLAYING,
   RESULT,
@@ -55,7 +55,14 @@ export const Quiz = () => {
           </a>
 
           <div>
-            Round: <HeaderNumbers>{round} / 9</HeaderNumbers>
+            Round:
+            {round <= gameConfig.questionsPerRound ? (
+              <HeaderNumbers>
+                {round} / {gameConfig.questionsPerRound}
+              </HeaderNumbers>
+            ) : (
+              <HeaderNumbers>Game Over</HeaderNumbers>
+            )}
           </div>
           <div>
             Correct Answers: <HeaderNumbers>{correctAnswers}</HeaderNumbers>
