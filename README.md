@@ -14,3 +14,6 @@ Collaborators: None at this time.
 7. Click spec.cy.ts to run the tests.
 8. Enjoy!
 
+
+### `Change Gamesettings in /utils/gameSettings.ts`
+
