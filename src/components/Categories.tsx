@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GameStateCtx, QuestionCtx, ScoreCtx } from "../ctx/Context";
 import { getCategories } from "../api/Api";
+import { shuffle } from "../utils/Utils";
 
 export const Categories = () => {
   const [quizCategories, setQuizCategories] = useState<string[]>([]);
@@ -14,13 +15,14 @@ export const Categories = () => {
   } = useContext(QuestionCtx);
   const { round, setRound, setDifficultyMultiplier, setPlayerName } =
     useContext(ScoreCtx);
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { setChangeGameState } = useContext(GameStateCtx);
   const handleCategory = (event: string) => {
     setCategory(event);
     setChangeGameState("playing");
   };
   const handleDifficulty = (e: string) => {
+    const difficultyArray = [1, 3, 5];
     switch (e) {
       case "easy":
         setDifficultyMultiplier(1);
@@ -32,7 +34,7 @@ export const Categories = () => {
         setDifficultyMultiplier(5);
         break;
       case "random":
-        setDifficultyMultiplier(Math.floor(Math.random() * 5) + 1);
+        setDifficultyMultiplier(difficultyArray[Math.floor(Math.random() * 3)]);
     }
     setDifficulty(e);
   };
@@ -52,8 +54,8 @@ export const Categories = () => {
         const response = await getCategories();
         const strings = Object.values(response).flat();
         setQuizCategories(strings as string[]);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        setErrorMessage("An error occurred: " + error.message);
       }
     };
     fetchCategories();
@@ -70,26 +72,25 @@ export const Categories = () => {
         setRegion,
       }}
     >
-      {round < 1 && (
+      {round < 1 && !errorMessage && (
         <div>
           <input
             onChange={(e) => handlePlayerName(e.currentTarget.value)}
             type="text"
             id="dark_field"
-            className="nes-input is-dark"
+            className="nes-input is-dark nameInput"
             placeholder="Type your name here..."
           />
           <div className="nes-select is-success">
             <select
+              className={"dropDown1"}
+              defaultValue={"easy"}
               required
               id="success_select"
               onChange={(e) => {
                 handleDifficulty(e.currentTarget.value);
               }}
             >
-              <option value="" disabled selected hidden>
-                Select difficulty...
-              </option>
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
@@ -99,15 +100,14 @@ export const Categories = () => {
 
           <div className="nes-select is-success">
             <select
+              className={"dropDown2"}
+              defaultValue={"SE"}
               required
               id="success_select"
               onChange={(e) => {
                 handleRegion(e.currentTarget.value);
               }}
             >
-              <option value="" disabled selected hidden>
-                Select Region...
-              </option>
               <option value="SE">Sweden</option>
               <option value="US">USA</option>
             </select>
@@ -115,15 +115,15 @@ export const Categories = () => {
           <button onClick={() => handleStart()}>Start Game</button>
         </div>
       )}
-      {round > 0 && (
+      {round > 0 && !errorMessage && (
         <div>
           <h2>Choose a category</h2>
           {quizCategories &&
-            quizCategories
-              .sort(() => 0.5 - Math.random())
+            shuffle(quizCategories)
               .slice(0, 3)
               .map((cat: any) => (
                 <button
+                  className="categoryButton"
                   key={cat}
                   value={cat}
                   onClick={(event) => handleCategory(event.currentTarget.value)}
@@ -132,6 +132,9 @@ export const Categories = () => {
                 </button>
               ))}
         </div>
+      )}
+      {errorMessage && (
+        <div>Api is down right now, try again later.{errorMessage}</div>
       )}
     </QuestionCtx.Provider>
   );

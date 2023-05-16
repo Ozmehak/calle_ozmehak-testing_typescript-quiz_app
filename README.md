@@ -3,17 +3,14 @@
 Author: Calle Özmehak.\
 Collaborators: None at this time.
 
-### `npm start`
+### `Steps:`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
+1. Clone the repo.
+2. Run npm install.
+3. Run npm test for unit tests.
+4. Run npm start to start the app.
+5. run npx cypress open to start cypress.
+6. Click e2e testing
+7. Click spec.cy.ts to run the tests.
+8. Enjoy!
 
