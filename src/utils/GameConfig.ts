@@ -3,6 +3,6 @@ export const gameConfig = {
   questionsPerRound: 9,
   // Time per question in seconds, Default: 30
   timePerQuestion: 30,
-  // Increase difficulty multiplier bonus, Default: 0
+  // Increase difficulty multiplier bonus, Default: 1
   increaseDifficultyMultiplier: 0,
 };

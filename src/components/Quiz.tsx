@@ -22,7 +22,7 @@ export const Quiz = () => {
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] =
     useState<number>(0);
-  const [consecutiveBonus, setConsecutiveBonus] = useState<number>(0);
+  const [consecutiveBonus, setConsecutiveBonus] = useState<number>(1);
   const [totalRemainingTime, setTotalRemainingTime] = useState<number>(0);
   const [difficultyMultiplier, setDifficultyMultiplier] = useState<number>(1);
   const [difficulty, setDifficulty] = useState<string>("");
