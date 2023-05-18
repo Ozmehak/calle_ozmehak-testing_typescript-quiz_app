@@ -1,3 +1,4 @@
+import {gameConfig} from "../../src/utils/GameConfig";
 describe("Quiz App", () => {
   it("should select difficulty, region, and start the game", () => {
     cy.visit("http://localhost:3000"); // Visit localhost:3000
@@ -11,7 +12,7 @@ describe("Quiz App", () => {
       .select("Sweden"); // Choose the "Sweden" option
     cy.wait(1500);
     cy.contains("Start Game").click(); // Click the "Start Game" button
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < gameConfig.questionsPerRound; i++) {
       cy.get("button.categoryButton") // Select all buttons with the class "categoryButton"
         .then((categoryButtons) => {
           const categoryRandomIndex = Math.floor(
