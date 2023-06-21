@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { GameStateCtx, QuestionCtx, ScoreCtx } from '../ctx/Context'
 import { gameConfig } from '../utils/GameConfig'
 import { shuffle, calculateScore } from '../utils/Utils'
-
+import { getQuizQuestion } from '../api/Api'
 
 export const Question = () => {
   const {
@@ -19,7 +19,7 @@ export const Question = () => {
     setTotalRemainingTime,
     difficultyMultiplier,
   } = useContext(ScoreCtx)
-  const { setChangeGameState } = useContext(GameStateCtx)
+  const { setChangeGameState, setError } = useContext(GameStateCtx)
   const { category, difficulty, region } = useContext(QuestionCtx)
   const [question, setQuestion] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(true)
@@ -49,22 +49,24 @@ export const Question = () => {
     }
   }, [consecutiveCorrectAnswers, setConsecutiveBonus, consecutiveBonus])
   useEffect(() => {
-    const getQuizQuestion = async () => {
+    const fetchQuestion = async (): Promise<void> => {
       try {
-        return fetch(`https://the-trivia-api.com/api/questions?categories=${category}&limit=1&difficulty=${difficulty}&region=${region}`)
-          .then((res) => res.json())
-          .then((json) => setQuestion(json[0]))
-      } catch (error) {
-        console.error(error)
+        const response = await getQuizQuestion(difficulty, category, region)
+        const strings = Object.values(response).flat()
+        setQuestion(strings as string[])
+        if (response.statusText >= 400) {
+          throw new Error('Bad response from server')
+        }
+      } catch (error: any) {
+        setError('Api seems to be down, try again later')
       }
     }
-    getQuizQuestion()
-  }, [category, difficulty, region])
+    fetchQuestion()
+  }, [category, difficulty, region, setError])
 
   useEffect(() => {
     if (question) {
       setAnswers(shuffle(question.incorrectAnswers, question.correctAnswer))
-
     }
   }, [question])
 

@@ -5,7 +5,6 @@ import { GameStateCtx, QuestionCtx, ScoreCtx } from '../ctx/Context'
 import styled from 'styled-components'
 import { gameConfig } from '../utils/GameConfig'
 
-
 export enum GameState {
   LOADING,
   SELECT_CATEGORY,
@@ -24,10 +23,10 @@ export const Quiz = () => {
   const [totalRemainingTime, setTotalRemainingTime] = useState<number>(0)
   const [difficultyMultiplier, setDifficultyMultiplier] = useState<number>(1)
   const [difficulty, setDifficulty] = useState<string>('')
-  const [region, setRegion] = useState<string>('US')
+  const [region, setRegion] = useState<string>('SE')
   const [category, setCategory] = useState<string>('')
   const [playerName, setPlayerName] = useState<string>('')
-
+  const [error, setError] = useState<string>('')
 
   useEffect(() => {
     switch (changeGameState) {
@@ -43,10 +42,10 @@ export const Quiz = () => {
       default:
         setGameState(GameState.SELECT_CATEGORY)
     }
-  }, [changeGameState])
+  }, [changeGameState, error])
 
   return (
-    <GameStateCtx.Provider value={{ changeGameState, setChangeGameState }}>
+    <GameStateCtx.Provider value={{ changeGameState, setChangeGameState, setError }}>
       <QuestionCtx.Provider
         value={{
           category,
@@ -102,9 +101,10 @@ export const Quiz = () => {
               </div>
             </Header>
             <Main className="nes-container is-rounded is-dark">
-              {gameState === GameState.LOADING && <div>loading</div>}
-              {gameState === GameState.SELECT_CATEGORY && <Categories />}
-              {gameState === GameState.PLAYING && (
+              {error && <div>{error}</div>}
+              {gameState === GameState.LOADING && !error && <div>loading</div>}
+              {gameState === GameState.SELECT_CATEGORY && !error && <Categories />}
+              {gameState === GameState.PLAYING && !error && (
                 <div className="nes-container is-rounded is-dark">
                   <Question />
                 </div>
