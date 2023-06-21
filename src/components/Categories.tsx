@@ -7,8 +7,7 @@ export const Categories = () => {
   const [quizCategories, setQuizCategories] = useState<string[]>([])
   const { category, setCategory, difficulty, setDifficulty, region, setRegion } = useContext(QuestionCtx)
   const { round, setRound, setDifficultyMultiplier, setPlayerName } = useContext(ScoreCtx)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const { setChangeGameState } = useContext(GameStateCtx)
+  const { setChangeGameState, setError } = useContext(GameStateCtx)
   const handleCategory = (event: string) => {
     setCategory(event)
     setChangeGameState('playing')
@@ -30,8 +29,8 @@ export const Categories = () => {
     }
     setDifficulty(e)
   }
-  const handleRegion = (e: string) => {
-    setRegion(e)
+  const handleRegion = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setRegion(e.currentTarget.value)
   }
   const handleStart = () => {
     setRound(round + 1)
@@ -46,12 +45,15 @@ export const Categories = () => {
         const response = await getCategories()
         const strings = Object.values(response).flat()
         setQuizCategories(strings as string[])
+        if (response.statusText >= 400) {
+          throw new Error('Bad response from server')
+        }
       } catch (error: any) {
-        setErrorMessage('An error occurred: ' + error.message)
+        setError('Api seems to be down, try again later')
       }
     }
     fetchCategories()
-  }, [])
+  }, [setError])
 
   return (
     <QuestionCtx.Provider
@@ -63,7 +65,7 @@ export const Categories = () => {
         region,
         setRegion,
       }}>
-      {round < 1 && !errorMessage && (
+      {round < 1 && (
         <div>
           <input
             onChange={(e) => handlePlayerName(e.currentTarget.value)}
@@ -95,7 +97,7 @@ export const Categories = () => {
               required
               id="success_select"
               onChange={(e) => {
-                handleRegion(e.currentTarget.value)
+                handleRegion(e)
               }}>
               <option value="SE">Sweden</option>
               <option value="US">USA</option>
@@ -104,7 +106,7 @@ export const Categories = () => {
           <button onClick={() => handleStart()}>Start Game</button>
         </div>
       )}
-      {round > 0 && !errorMessage && (
+      {round > 0 && (
         <div>
           <h2>Choose a category</h2>
           {quizCategories &&
@@ -115,12 +117,6 @@ export const Categories = () => {
                   {cat}
                 </button>
               ))}
-        </div>
-      )}
-      {errorMessage && (
-        <div>
-          Api is down right now, try again later.
-          {errorMessage}
         </div>
       )}
     </QuestionCtx.Provider>
