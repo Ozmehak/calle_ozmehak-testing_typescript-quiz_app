@@ -5,6 +5,7 @@ import { GameStateCtx, QuestionCtx, ScoreCtx } from '../ctx/Context'
 import styled from 'styled-components'
 import { gameConfig } from '../utils/GameConfig'
 
+
 export enum GameState {
   LOADING,
   SELECT_CATEGORY,
@@ -26,6 +27,7 @@ export const Quiz = () => {
   const [region, setRegion] = useState<string>('US')
   const [category, setCategory] = useState<string>('')
   const [playerName, setPlayerName] = useState<string>('')
+
 
   useEffect(() => {
     switch (changeGameState) {

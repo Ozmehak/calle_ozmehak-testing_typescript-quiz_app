@@ -6,7 +6,9 @@ export function shuffle<T>(array: T[], string?: T): T[] {
     to.push(...element)
   }
   return to
+
 }
+
 
 export function calculateScore(
   totalRemainingTime: number,
