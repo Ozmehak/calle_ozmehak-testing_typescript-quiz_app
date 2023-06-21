@@ -5,4 +5,4 @@ export const gameConfig = {
   timePerQuestion: 30,
   // Increase difficulty multiplier bonus, Default: 1
   increaseDifficultyMultiplier: 0,
-};
+}

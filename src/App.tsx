@@ -1,13 +1,13 @@
-import "nes.css/css/nes.min.css";
+import 'nes.css/css/nes.min.css'
 
-import { Quiz } from "./components/Quiz";
+import { Quiz } from './components/Quiz'
 
 function App() {
   return (
     <div className="App">
       <Quiz />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

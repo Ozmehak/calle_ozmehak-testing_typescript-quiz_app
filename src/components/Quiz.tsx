@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Question } from "./Question";
-import { Categories } from "./Categories";
-import { GameStateCtx, QuestionCtx, ScoreCtx } from "../ctx/Context";
-import styled from "styled-components";
-import { gameConfig } from "../utils/GameConfig";
+import { useEffect, useState } from 'react'
+import { Question } from './Question'
+import { Categories } from './Categories'
+import { GameStateCtx, QuestionCtx, ScoreCtx } from '../ctx/Context'
+import styled from 'styled-components'
+import { gameConfig } from '../utils/GameConfig'
 
 export enum GameState {
   LOADING,
@@ -13,44 +13,41 @@ export enum GameState {
 }
 
 export const Quiz = () => {
-  const [gameState, setGameState] = useState<GameState>(
-    GameState.SELECT_CATEGORY
-  );
-  const [changeGameState, setChangeGameState] = useState<string>("");
-  const [score, setScore] = useState<number>(0);
-  const [round, setRound] = useState<number>(0);
-  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
-  const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] =
-    useState<number>(0);
-  const [consecutiveBonus, setConsecutiveBonus] = useState<number>(1);
-  const [totalRemainingTime, setTotalRemainingTime] = useState<number>(0);
-  const [difficultyMultiplier, setDifficultyMultiplier] = useState<number>(1);
-  const [difficulty, setDifficulty] = useState<string>("");
-  const [region, setRegion] = useState<string>("US");
-  const [category, setCategory] = useState<string>("");
-  const [playerName, setPlayerName] = useState<string>("");
+  const [gameState, setGameState] = useState<GameState>(GameState.SELECT_CATEGORY)
+  const [changeGameState, setChangeGameState] = useState<string>('')
+  const [score, setScore] = useState<number>(0)
+  const [round, setRound] = useState<number>(0)
+  const [correctAnswers, setCorrectAnswers] = useState<number>(0)
+  const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState<number>(0)
+  const [consecutiveBonus, setConsecutiveBonus] = useState<number>(1)
+  const [totalRemainingTime, setTotalRemainingTime] = useState<number>(0)
+  const [difficultyMultiplier, setDifficultyMultiplier] = useState<number>(1)
+  const [difficulty, setDifficulty] = useState<string>('')
+  const [region, setRegion] = useState<string>('US')
+  const [category, setCategory] = useState<string>('')
+  const [playerName, setPlayerName] = useState<string>('')
 
   useEffect(() => {
     switch (changeGameState) {
-      case "playing":
-        setGameState(GameState.PLAYING);
-        break;
-      case "result":
-        setGameState(GameState.RESULT);
-        break;
-      case "selectCategory":
-        setGameState(GameState.SELECT_CATEGORY);
-        break;
+      case 'playing':
+        setGameState(GameState.PLAYING)
+        break
+      case 'result':
+        setGameState(GameState.RESULT)
+        break
+      case 'selectCategory':
+        setGameState(GameState.SELECT_CATEGORY)
+        break
       default:
-        setGameState(GameState.SELECT_CATEGORY);
+        setGameState(GameState.SELECT_CATEGORY)
     }
-  }, [changeGameState]);
+  }, [changeGameState])
 
   return (
     <GameStateCtx.Provider value={{ changeGameState, setChangeGameState }}>
       <>
         <Header className="nes-container is-rounded is-dark">
-          <a href={"/"}>
+          <a href={'/'}>
             <button>Reset</button>
           </a>
 
@@ -85,8 +82,7 @@ export const Quiz = () => {
                 setDifficulty,
                 region,
                 setRegion,
-              }}
-            >
+              }}>
               <ScoreCtx.Provider
                 value={{
                   score,
@@ -105,8 +101,7 @@ export const Quiz = () => {
                   setDifficultyMultiplier,
                   playerName,
                   setPlayerName,
-                }}
-              >
+                }}>
                 <Categories />
               </ScoreCtx.Provider>
             </QuestionCtx.Provider>
@@ -130,8 +125,7 @@ export const Quiz = () => {
                 setDifficultyMultiplier,
                 playerName,
                 setPlayerName,
-              }}
-            >
+              }}>
               <div className="nes-container is-rounded is-dark">
                 <QuestionCtx.Provider
                   value={{
@@ -141,8 +135,7 @@ export const Quiz = () => {
                     setDifficulty,
                     region,
                     setRegion,
-                  }}
-                >
+                  }}>
                   <Question />
                 </QuestionCtx.Provider>
               </div>
@@ -150,17 +143,15 @@ export const Quiz = () => {
           )}
           {gameState === GameState.RESULT && (
             <div>
-              Well done {playerName}! Score: {score}{" "}
+              Well done {playerName}! Score: {score}{' '}
             </div>
           )}
         </Main>
-        <Footer className="nes-container is-rounded is-dark">
-          &copy; 2023 Calle Özmehak
-        </Footer>
+        <Footer className="nes-container is-rounded is-dark">&copy; 2023 Calle Özmehak</Footer>
       </>
     </GameStateCtx.Provider>
-  );
-};
+  )
+}
 
 const Header = styled.div`
   display: flex;
@@ -172,16 +163,16 @@ const Header = styled.div`
   text-transform: uppercase;
   border-radius: 0.5rem;
   height: 15vh;
-`;
+`
 const HeaderNumbers = styled.span`
   font-size: 1.5rem;
   margin: 0;
   padding: 0;
-`;
+`
 const Main = styled.div`
   height: 79vh;
-`;
+`
 
 const Footer = styled.div`
   height: 5vh;
-`;
+`

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import { GameStateCtx, QuestionCtx, ScoreCtx } from "../ctx/Context";
-import { gameConfig } from "../utils/GameConfig";
-import { answerShuffle, calculateScore } from "../utils/Utils";
+import React, { useState, useEffect, useContext } from 'react'
+import { GameStateCtx, QuestionCtx, ScoreCtx } from '../ctx/Context'
+import { gameConfig } from '../utils/GameConfig'
+import { shuffle, calculateScore } from '../utils/Utils'
 
 export const Question = () => {
   const {
@@ -17,120 +17,100 @@ export const Question = () => {
     totalRemainingTime,
     setTotalRemainingTime,
     difficultyMultiplier,
-  } = useContext(ScoreCtx);
-  const { setChangeGameState } = useContext(GameStateCtx);
-  const { category, difficulty, region } = useContext(QuestionCtx);
-  const [question, setQuestion] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [answers, setAnswers] = useState<any>([]);
-
-  const [fastCount, setFastCount] = useState<number>(3);
-  const [slowCount, setSlowCount] = useState<number>(
-    gameConfig.timePerQuestion
-  );
-  const [fastTimerOn, setFastTimerOn] = useState<boolean>(true);
-  const [slowTimerOn, setSlowTimerOn] = useState<boolean>(false);
+  } = useContext(ScoreCtx)
+  const { setChangeGameState } = useContext(GameStateCtx)
+  const { category, difficulty, region } = useContext(QuestionCtx)
+  const [question, setQuestion] = useState<any>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [answers, setAnswers] = useState<any>([])
+  const [fastCount, setFastCount] = useState<number>(3)
+  const [slowCount, setSlowCount] = useState<number>(gameConfig.timePerQuestion)
+  const [fastTimerOn, setFastTimerOn] = useState<boolean>(true)
+  const [slowTimerOn, setSlowTimerOn] = useState<boolean>(false)
 
   const handleAnswer = (e: any) => {
-    setRound(round + 1);
-    setSlowTimerOn(false);
-    setChangeGameState("selectCategory");
+    setRound(round + 1)
+    setSlowTimerOn(false)
+    setChangeGameState('selectCategory')
 
     if (e === question.correctAnswer) {
-      setCorrectAnswers(correctAnswers + 1);
-      setConsecutiveCorrectAnswers(consecutiveCorrectAnswers + 1);
-      setTotalRemainingTime(Math.floor(totalRemainingTime + slowCount));
+      setCorrectAnswers(correctAnswers + 1)
+      setConsecutiveCorrectAnswers(consecutiveCorrectAnswers + 1)
+      setTotalRemainingTime(Math.floor(totalRemainingTime + slowCount))
     } else {
-      setConsecutiveCorrectAnswers(0);
+      setConsecutiveCorrectAnswers(0)
     }
-  };
+  }
 
   useEffect(() => {
-    if (
-      consecutiveCorrectAnswers >= 3 &&
-      consecutiveCorrectAnswers >= consecutiveBonus
-    ) {
-      setConsecutiveBonus(consecutiveCorrectAnswers);
+    if (consecutiveCorrectAnswers >= 3 && consecutiveCorrectAnswers >= consecutiveBonus) {
+      setConsecutiveBonus(consecutiveCorrectAnswers)
     }
-  }, [consecutiveCorrectAnswers, setConsecutiveBonus, consecutiveBonus]);
-
+  }, [consecutiveCorrectAnswers, setConsecutiveBonus, consecutiveBonus])
   useEffect(() => {
     const getQuizQuestion = async () => {
       try {
-        return fetch(
-          `https://the-trivia-api.com/api/questions?categories=${category}&limit=1&difficulty=${difficulty}&region=${region}`
-        )
+        return fetch(`https://the-trivia-api.com/api/questions?categories=${category}&limit=1&difficulty=${difficulty}&region=${region}`)
           .then((res) => res.json())
-          .then((json) => setQuestion(json[0]));
+          .then((json) => setQuestion(json[0]))
       } catch (error) {
-        getQuizQuestion();
-        console.error(error);
-
-        return "Api is down right now, try again later";
+        console.error(error)
       }
-    };
-    getQuizQuestion();
-  }, [category, difficulty, region]);
+    }
+    getQuizQuestion()
+  }, [category, difficulty, region])
 
   useEffect(() => {
     if (question) {
-      setAnswers(
-        answerShuffle(question.incorrectAnswers, question.correctAnswer)
-      );
+      setAnswers(shuffle(question.incorrectAnswers, question.correctAnswer))
     }
-  }, [question]);
+  }, [question])
 
   useEffect(() => {
-    let intervalFast: NodeJS.Timeout | null = null;
-    let intervalSlow: NodeJS.Timeout | null = null;
+    let intervalFast: NodeJS.Timeout | null = null
+    let intervalSlow: NodeJS.Timeout | null = null
 
     if (fastTimerOn) {
       intervalFast = setInterval(() => {
-        setFastCount((prevFastCount) => prevFastCount - 1);
-      }, 1000);
+        setFastCount((prevFastCount) => prevFastCount - 1)
+      }, 1000)
     }
     if (slowTimerOn) {
       intervalSlow = setInterval(() => {
-        setSlowCount((prevSlowCount) => prevSlowCount - 0.25);
-      }, 250);
+        setSlowCount((prevSlowCount) => prevSlowCount - 0.25)
+      }, 250)
     }
     if (!fastTimerOn && intervalFast) {
-      clearInterval(intervalFast);
+      clearInterval(intervalFast)
     }
     if (!slowTimerOn && intervalSlow) {
-      clearInterval(intervalSlow);
+      clearInterval(intervalSlow)
     }
 
     return () => {
-      if (intervalFast) clearInterval(intervalFast);
-    };
-  }, [fastTimerOn, slowTimerOn]);
+      if (intervalFast) clearInterval(intervalFast)
+    }
+  }, [fastTimerOn, slowTimerOn])
 
   if (!question) {
-    return <div>Loading question...</div>;
+    return <div>Loading question...</div>
   }
   if (fastTimerOn && fastCount <= 0) {
-    setFastTimerOn(false);
-    setLoading(false);
-    setSlowTimerOn(true);
+    setFastTimerOn(false)
+    setLoading(false)
+    setSlowTimerOn(true)
   }
   if (slowTimerOn && slowCount <= 0) {
-    setSlowTimerOn(false);
-    setChangeGameState("selectCategory");
-    setConsecutiveCorrectAnswers(0);
-    setRound(round + 1);
+    setSlowTimerOn(false)
+    setChangeGameState('selectCategory')
+    setConsecutiveCorrectAnswers(0)
+    setRound(round + 1)
   }
   if (round > gameConfig.questionsPerRound) {
     setScore(
-      calculateScore(
-        totalRemainingTime,
-        difficultyMultiplier,
-        gameConfig.increaseDifficultyMultiplier,
-        correctAnswers,
-        consecutiveBonus
-      )
-    );
-    setChangeGameState("result");
+      calculateScore(totalRemainingTime, difficultyMultiplier, gameConfig.increaseDifficultyMultiplier, correctAnswers, consecutiveBonus)
+    )
+    setChangeGameState('result')
   }
   return (
     <>
@@ -151,12 +131,7 @@ export const Question = () => {
                 <div className="nes-balloon from-right is-dark">
                   {question &&
                     answers.map((answer: string, i: number) => (
-                      <button
-                        className={"answerButton"}
-                        key={i}
-                        value={answer}
-                        onClick={(e) => handleAnswer(e.currentTarget.value)}
-                      >
+                      <button className={'answerButton'} key={i} value={answer} onClick={(e) => handleAnswer(e.currentTarget.value)}>
                         {answer}
                       </button>
                     ))}
@@ -166,14 +141,10 @@ export const Question = () => {
             </section>
           </section>
           <div>
-            <progress
-              className="nes-progress is-success"
-              value={slowCount}
-              max="30"
-            ></progress>
+            <progress className="nes-progress is-success" value={slowCount} max="30"></progress>
           </div>
         </>
       )}
     </>
-  );
-};
+  )
+}
