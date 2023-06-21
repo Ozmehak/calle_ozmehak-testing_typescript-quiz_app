@@ -9,9 +9,13 @@ export const getCategories = (): any => {
   }
 }
 
-export const getQuizQuestion = async (category: string, difficulty: string, region: string) => {
+export const getQuizQuestion = async (category: string, region: string, difficulty?: string) => {
   try {
-    return fetch(`https://the-trivia-api.com/api/questions?categories=${category}&limit=1&difficulty=${difficulty}&region=${region}`)
+    return fetch(
+      `https://the-trivia-api.com/api/questions?categories=${category}&limit=1&region=${region}${
+        difficulty ? `&difficulty=${difficulty}` : ''
+      }`
+    )
       .then((res) => res.json())
       .then((json) => json)
   } catch (error) {

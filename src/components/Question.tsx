@@ -51,9 +51,8 @@ export const Question = () => {
   useEffect(() => {
     const fetchQuestion = async (): Promise<void> => {
       try {
-        const response = await getQuizQuestion(difficulty, category, region)
-        const strings = Object.values(response).flat()
-        setQuestion(strings as string[])
+        const response = await getQuizQuestion(category, region, difficulty)
+        setQuestion(response.pop())
         if (response.statusText >= 400) {
           throw new Error('Bad response from server')
         }
