@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { GameStateCtx, QuestionCtx, ScoreCtx } from "../ctx/Context";
 import { gameConfig } from "../utils/GameConfig";
-import { answerShuffle, calculateScore } from "../utils/Utils";
+import { shuffle, calculateScore } from "../utils/Utils";
 
 export const Question = () => {
   const {
@@ -75,7 +75,7 @@ export const Question = () => {
   useEffect(() => {
     if (question) {
       setAnswers(
-        answerShuffle(question.incorrectAnswers, question.correctAnswer)
+        shuffle(question.incorrectAnswers, question.correctAnswer)
       );
     }
   }, [question]);

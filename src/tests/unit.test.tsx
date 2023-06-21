@@ -1,7 +1,6 @@
-import { shuffle } from "../utils/Utils";
 import { getCategories } from "../api/Api";
 import React from "react";
-import { answerShuffle } from "../utils/Utils";
+import { shuffle } from "../utils/Utils";
 import { calculateScore } from "../utils/Utils";
 
 test("shuffle always shuffles input", () => {
@@ -44,11 +43,11 @@ describe("calculateScore", () => {
   });
 });
 
-describe("answerShuffle", () => {
+describe("shuffle", () => {
   it("should shuffle add the string and shuffle the array", () => {
     const array = ["a", "b", "c", "d", "e", "f"];
     const string = "g";
-    const shuffledArray = answerShuffle(array, string);
+    const shuffledArray = shuffle(array, string);
 
     // @ts-ignore
     expect(shuffledArray).toContain(...array, string);

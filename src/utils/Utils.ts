@@ -1,5 +1,5 @@
-export function shuffle<T>(array: T[]): T[] {
-  const from = [...array];
+export function shuffle<T>(array: T[], string?: T): T[] {
+  const from = string ? [...array, string] : [...array];
   const to: T[] = [];
   while (from.length) {
     const element = from.splice(Math.floor(Math.random() * from.length), 1);
@@ -7,15 +7,7 @@ export function shuffle<T>(array: T[]): T[] {
   }
   return to;
 }
-export function answerShuffle<T>(array1: T[], string: T): T[] {
-  const from = [...array1, string];
-  const to: T[] = [];
-  while (from.length) {
-    const element = from.splice(Math.floor(Math.random() * from.length), 1);
-    to.push(...element);
-  }
-  return to;
-}
+
 
 export function calculateScore(
   totalRemainingTime: number,

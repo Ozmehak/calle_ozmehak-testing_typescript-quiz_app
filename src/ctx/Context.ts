@@ -29,8 +29,7 @@ type ScoreCtxType = {
   difficultyMultiplier: number;
   setDifficultyMultiplier: (difficultyMultiplier: number) => void;
   playerName: string;
-  setPlayerName: (playerName: string) => void;
-};
+  setPlayerName: (playerName: string) => void; };
 export const GameStateCtx = createContext(null as unknown as GameStateCtxType);
 
 export const QuestionCtx = createContext(null as unknown as QuestionCtxType);
