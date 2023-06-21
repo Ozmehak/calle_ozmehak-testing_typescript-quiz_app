@@ -31,6 +31,7 @@ describe('calculateScore', () => {
     const correctAnswers = 5
     const consecutiveBonus = 2
 
+
     const expectedScore =
       Math.floor(totalRemainingTime * (difficultyMultiplier + increaseDifficultyMultiplier) + correctAnswers) * consecutiveBonus
 
@@ -59,6 +60,7 @@ describe('shuffle', () => {
     const string = 'g'
     const shuffledArray = shuffle(array, string)
 >>>>>>> dev
+
 
     // @ts-ignore
     expect(shuffledArray).toContain(...array, string)

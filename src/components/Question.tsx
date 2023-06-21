@@ -3,6 +3,7 @@ import { GameStateCtx, QuestionCtx, ScoreCtx } from '../ctx/Context'
 import { gameConfig } from '../utils/GameConfig'
 import { shuffle, calculateScore } from '../utils/Utils'
 
+
 export const Question = () => {
   const {
     setScore,
@@ -63,6 +64,7 @@ export const Question = () => {
   useEffect(() => {
     if (question) {
       setAnswers(shuffle(question.incorrectAnswers, question.correctAnswer))
+
     }
   }, [question])
 
