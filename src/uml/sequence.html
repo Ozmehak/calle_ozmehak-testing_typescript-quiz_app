@@ -1,88 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-  <script type="module">
-    import mermaid from 'https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true });
-  </script>
+      <meta charset='UTF-8'>
+      <title>Title</title>
+      <script type='module'>
+            import mermaid from 'https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs'
+
+            mermaid.initialize({ startOnLoad: true })
+      </script>
 </head>
 <body>
-<div class="mermaid">
-  sequenceDiagram
-  participant user as User
-  participant app as Application
-  participant api as API
+<div class='mermaid'>
+      sequenceDiagram
+      participant user as User
+      participant app as Application
+      participant api as API
 
-  user ->>+app: Clicks Start Game
-  app ->>+api: Get Categories
-  alt is Error
-  api -->>+app: ErrorCode
-  app -->>+user: ErrorMessage
-  else is Ok
-  api -->>+app: AllCategories
-  app -->>+user: Show 3 random Categories
-  end
-  user ->>+app: Selects Category
-  app ->>+api: Get Questions & Answers
-  alt not Found
-  api -->>+app: Question not found
-  loop Until Found
-  app -->>+api: get Question
-  alt to many requests
-  api -->>+app: Request Overload
-  app -->>+user: Game Over
-  end
-  end
-  end
-  api -->>+app: Question & Answers
-  app -->>+user: shows 3 sec timer
-  app -->>+user: show 1 question
-  app -->>+user: show 4 answer options
-  app -->>+user: Start 30 sec timer
-  par
-  user ->>+app: select answer
-  app -->>+user: Stop Timer
-  end
-  alt is Correct
-  app ->>+user: Correct Answer & Add points
-  else not Correct
-  app ->>+user: Not Correct, no points
-  end
-  loop 8 times
-  app -->>+user: Show 3 random Categories
-  user ->>+app: Selects Category
-  app ->>+api: Get Questions & Answers
-  alt not Found
-  api -->>+app: Question not found
-  loop Until Found
-  app -->>+api: get Question
-  alt to many requests
-  api -->>+app: Request Overload
-  app -->>+user: Game Over
-  end
-  end
-  end
-  api -->>+app: Question & Answers
-  app -->>+user: shows 3 sec timer
-  app -->>+user: show 1 question
-  app -->>+user: show 4 answer options
-  par
-  user ->>+app: select answer
-  app -->>+user: Stop Timer
-  end
-  alt is Correct
-  app ->>+user: Correct Answer & Add points
-  else not Correct
-  app ->>+user: Not Correct, no points
-  end
-  end
-  par points
-  app --x+user: Show Points
-  and game over
-  app --x+user: Game Over
-  end
+      user ->>+app: Clicks Start Game
+      app ->>+api: Get Categories
+      alt is Error
+      api -->>+app: ErrorCode
+      app -->>+user: ErrorMessage
+      else is Ok
+      api -->>+app: AllCategories
+      app -->>+user: Show 3 random Categories
+      end
+      user ->>+app: Selects Category
+      app ->>+api: Get Questions & Answers
+      alt not Found
+      api -->>+app: Question not found
+      loop Until Found
+      app -->>+api: get Question
+      alt to many requests
+      api -->>+app: Request Overload
+      app -->>+user: Game Over
+      end
+      end
+      end
+      api -->>+app: Question & Answers
+      app -->>+user: shows 3 sec timer
+      app -->>+user: show 1 question
+      app -->>+user: show 4 answer options
+      app -->>+user: Start 30 sec timer
+      par
+      user ->>+app: select answer
+      app -->>+user: Stop Timer
+      end
+      alt is Correct
+      app ->>+user: Correct Answer & Add points
+      else not Correct
+      app ->>+user: Not Correct, no points
+      end
+      loop 8 times
+      app -->>+user: Show 3 random Categories
+      user ->>+app: Selects Category
+      app ->>+api: Get Questions & Answers
+      alt not Found
+      api -->>+app: Question not found
+      loop Until Found
+      app -->>+api: get Question
+      alt to many requests
+      api -->>+app: Request Overload
+      app -->>+user: Game Over
+      end
+      end
+      end
+      api -->>+app: Question & Answers
+      app -->>+user: shows 3 sec timer
+      app -->>+user: show 1 question
+      app -->>+user: show 4 answer options
+      par
+      user ->>+app: select answer
+      app -->>+user: Stop Timer
+      end
+      alt is Correct
+      app ->>+user: Correct Answer & Add points
+      else not Correct
+      app ->>+user: Not Correct, no points
+      end
+      end
+      par points
+      app --x+user: Show Points
+      and game over
+      app --x+user: Game Over
+      end
 
 
 </div>
