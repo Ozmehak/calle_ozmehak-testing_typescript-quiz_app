@@ -20,7 +20,7 @@ export const Question = () => {
     difficultyMultiplier,
   } = useContext(ScoreCtx)
   const { setChangeGameState, setError } = useContext(GameStateCtx)
-  const { category, difficulty, region } = useContext(QuestionCtx)
+  const { category, difficulty, region, setDifficulty } = useContext(QuestionCtx)
   const [question, setQuestion] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [answers, setAnswers] = useState<any>([])

@@ -11,9 +11,11 @@ export const getCategories = (): any => {
 
 export const getQuizQuestion = async (category: string, region: string, difficulty?: string) => {
   try {
+    const actualDifficulty = difficulty === 'random' ? '' : difficulty
+
     return fetch(
       `https://the-trivia-api.com/api/questions?categories=${category}&limit=1&region=${region}${
-        difficulty ? `&difficulty=${difficulty}` : ''
+        actualDifficulty ? `&difficulty=${actualDifficulty}` : ''
       }`
     )
       .then((res) => res.json())
