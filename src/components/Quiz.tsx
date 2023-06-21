@@ -45,110 +45,78 @@ export const Quiz = () => {
 
   return (
     <GameStateCtx.Provider value={{ changeGameState, setChangeGameState }}>
-      <>
-        <Header className="nes-container is-rounded is-dark">
-          <a href={'/'}>
-            <button>Reset</button>
-          </a>
+      <QuestionCtx.Provider
+        value={{
+          category,
+          setCategory,
+          difficulty,
+          setDifficulty,
+          region,
+          setRegion,
+        }}>
+        <ScoreCtx.Provider
+          value={{
+            score,
+            setScore,
+            round,
+            setRound,
+            correctAnswers,
+            setCorrectAnswers,
+            consecutiveCorrectAnswers,
+            setConsecutiveCorrectAnswers,
+            consecutiveBonus,
+            setConsecutiveBonus,
+            totalRemainingTime,
+            setTotalRemainingTime,
+            difficultyMultiplier,
+            setDifficultyMultiplier,
+            playerName,
+            setPlayerName,
+          }}>
+          <>
+            <Header className="nes-container is-rounded is-dark">
+              <a href={'/'}>
+                <button>Reset</button>
+              </a>
 
-          <div>
-            Round:
-            {round <= gameConfig.questionsPerRound ? (
-              <HeaderNumbers>
-                {round} / {gameConfig.questionsPerRound}
-              </HeaderNumbers>
-            ) : (
-              <HeaderNumbers>Game Over</HeaderNumbers>
-            )}
-          </div>
-          <div>
-            Correct Answers: <HeaderNumbers>{correctAnswers}</HeaderNumbers>
-          </div>
-          <div>
-            Streak: x <HeaderNumbers>{consecutiveBonus}</HeaderNumbers>
-          </div>
-          <div>
-            Bonus Time: <HeaderNumbers>{totalRemainingTime}</HeaderNumbers>
-          </div>
-        </Header>
-        <Main className="nes-container is-rounded is-dark">
-          {gameState === GameState.LOADING && <div>loading</div>}
-          {gameState === GameState.SELECT_CATEGORY && (
-            <QuestionCtx.Provider
-              value={{
-                category,
-                setCategory,
-                difficulty,
-                setDifficulty,
-                region,
-                setRegion,
-              }}>
-              <ScoreCtx.Provider
-                value={{
-                  score,
-                  setScore,
-                  round,
-                  setRound,
-                  correctAnswers,
-                  setCorrectAnswers,
-                  consecutiveCorrectAnswers,
-                  setConsecutiveCorrectAnswers,
-                  consecutiveBonus,
-                  setConsecutiveBonus,
-                  totalRemainingTime,
-                  setTotalRemainingTime,
-                  difficultyMultiplier,
-                  setDifficultyMultiplier,
-                  playerName,
-                  setPlayerName,
-                }}>
-                <Categories />
-              </ScoreCtx.Provider>
-            </QuestionCtx.Provider>
-          )}
-          {gameState === GameState.PLAYING && (
-            <ScoreCtx.Provider
-              value={{
-                score,
-                setScore,
-                round,
-                setRound,
-                correctAnswers,
-                setCorrectAnswers,
-                consecutiveCorrectAnswers,
-                setConsecutiveCorrectAnswers,
-                consecutiveBonus,
-                setConsecutiveBonus,
-                totalRemainingTime,
-                setTotalRemainingTime,
-                difficultyMultiplier,
-                setDifficultyMultiplier,
-                playerName,
-                setPlayerName,
-              }}>
-              <div className="nes-container is-rounded is-dark">
-                <QuestionCtx.Provider
-                  value={{
-                    category,
-                    setCategory,
-                    difficulty,
-                    setDifficulty,
-                    region,
-                    setRegion,
-                  }}>
-                  <Question />
-                </QuestionCtx.Provider>
+              <div>
+                Round:
+                {round <= gameConfig.questionsPerRound ? (
+                  <HeaderNumbers>
+                    {round} / {gameConfig.questionsPerRound}
+                  </HeaderNumbers>
+                ) : (
+                  <HeaderNumbers>Game Over</HeaderNumbers>
+                )}
               </div>
-            </ScoreCtx.Provider>
-          )}
-          {gameState === GameState.RESULT && (
-            <div>
-              Well done {playerName}! Score: {score}{' '}
-            </div>
-          )}
-        </Main>
-        <Footer className="nes-container is-rounded is-dark">&copy; 2023 Calle Özmehak</Footer>
-      </>
+              <div>
+                Correct Answers: <HeaderNumbers>{correctAnswers}</HeaderNumbers>
+              </div>
+              <div>
+                Streak: x <HeaderNumbers>{consecutiveBonus}</HeaderNumbers>
+              </div>
+              <div>
+                Bonus Time: <HeaderNumbers>{totalRemainingTime}</HeaderNumbers>
+              </div>
+            </Header>
+            <Main className="nes-container is-rounded is-dark">
+              {gameState === GameState.LOADING && <div>loading</div>}
+              {gameState === GameState.SELECT_CATEGORY && <Categories />}
+              {gameState === GameState.PLAYING && (
+                <div className="nes-container is-rounded is-dark">
+                  <Question />
+                </div>
+              )}
+              {gameState === GameState.RESULT && (
+                <div>
+                  Well done {playerName}! Score: {score}{' '}
+                </div>
+              )}
+            </Main>
+            <Footer className="nes-container is-rounded is-dark">&copy; 2023 Calle Özmehak</Footer>
+          </>
+        </ScoreCtx.Provider>
+      </QuestionCtx.Provider>
     </GameStateCtx.Provider>
   )
 }
