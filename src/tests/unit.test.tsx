@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-import { getCategories } from "../api/Api";
 import React from "react";
 import { shuffle } from "../utils/Utils";
 import { calculateScore } from "../utils/Utils";
-=======
 import { getCategories } from '../api/Api'
-import React from 'react'
-import { shuffle } from '../utils/Utils'
-import { calculateScore } from '../utils/Utils'
->>>>>>> dev
+
 
 test('shuffle always shuffles input', () => {
   const array = [{ a: 0 }, { b: 1 }, { c: 1 }, { d: 1 }, { e: 1 }, { f: 1 }]
@@ -47,19 +41,12 @@ describe('calculateScore', () => {
   })
 })
 
-<<<<<<< HEAD
-describe("shuffle", () => {
-  it("should shuffle add the string and shuffle the array", () => {
-    const array = ["a", "b", "c", "d", "e", "f"];
-    const string = "g";
-    const shuffledArray = shuffle(array, string);
-=======
+
 describe('shuffle', () => {
   it('should shuffle add the string and shuffle the array', () => {
     const array = ['a', 'b', 'c', 'd', 'e', 'f']
     const string = 'g'
     const shuffledArray = shuffle(array, string)
->>>>>>> dev
 
 
     // @ts-ignore

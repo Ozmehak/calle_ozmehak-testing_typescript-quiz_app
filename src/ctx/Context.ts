@@ -3,6 +3,8 @@ import { createContext } from 'react'
 type GameStateCtxType = {
   changeGameState: string
   setChangeGameState: (changeGameState: string) => void
+  error?: string
+  setError: (error: string) => void
 }
 
 type QuestionCtxType = {
