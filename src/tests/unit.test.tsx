@@ -42,11 +42,12 @@ describe('calculateScore', () => {
 })
 
 
-describe('shuffle', () => {
-  it('should shuffle add the string and shuffle the array', () => {
-    const array = ['a', 'b', 'c', 'd', 'e', 'f']
-    const string = 'g'
-    const shuffledArray = shuffle(array, string)
+describe("shuffle", () => {
+  it("should shuffle add the string and shuffle the array", () => {
+    const array = ["a", "b", "c", "d", "e", "f"];
+    const string = "g";
+    const shuffledArray = shuffle(array, string);
+
 
 
     // @ts-ignore
